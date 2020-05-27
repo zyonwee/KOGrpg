@@ -1,3 +1,4 @@
-Snakeling,<:Snakeling:715010903828987975>,1,littleFangs,Medusa's lice and bugs,5,8,3,20,10,2
-Eyeling, ,2,littleBlood,Period.,6,20,7,30,15,2
-Slimeling, ,5,littleBlood,Period.,6,60,16,30,30,2
+name,emoji,level,itermdrop,desc,chance,coins,att,hp,xp,num_drop
+Eyeling," " " ",2,littleBlood,Period.,6,20,7,30,15,2
+Slimeling," " " ",5,littleOoze,Slimey,4,60,16,30,30,4
+Snakeling,<:Snakeling:715010903828987975>,0,littleFangs,"Medusa's lice and bugs",5,8,3,20,10,2
