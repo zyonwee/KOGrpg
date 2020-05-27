@@ -12,6 +12,7 @@ def get_allName():
     print(users_array, Users)
     return users_array
 
+
 def get_att(name):
     f = open("userInfo.csv", "r")
     reader = csv.reader(f)
@@ -128,3 +129,16 @@ def get_level(name):
     level = str(Users[name]["level"])
     return level
 
+
+def set_coin(name,coins):
+    f = open("userInfo.csv", "r")
+    reader = csv.reader(f)
+    Users = {}
+    for row in reader:
+        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
+                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
+        print(row[0], name)
+        if row[0] == name:
+            Users[name]['coins'] = coins
+
+set_coin("tom", 10000)
