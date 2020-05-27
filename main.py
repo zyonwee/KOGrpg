@@ -1,6 +1,7 @@
 import discord
 import stats as s
 import items as item
+import monsters as mon
 
 client = discord.Client()
 
@@ -61,5 +62,12 @@ async def on_message(message):
         embed.add_field(name="Interfacing Commands", value="`kog` `kog profile` `kog shop`")
         await message.channel.send(content=None, embed=embed)
 
+    if message.content.startswith("kog hunt"):
+        result = mon.fight(mon.get_monster(s.get_level(n)), s.get_att(n), s.get_def(n), s.get_curr_hp(n), s.get_max_hp(n))
+        print(result)
+        if result[3]:
+            await message.channel.send(content=result[0])
+        else:
+            await message.channel.send(content=result[0])
 # client.loop.create_task(update_stats())
 client.run('NzE0ODM0NTc2ODk5NTcxNzkz.Xs0o0Q.vKw8tmtsg45zX9Y9vJQW47B5wak')
