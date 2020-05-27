@@ -1,144 +1,128 @@
-import csv
+import db
 
 def get_allName():
-    f = open("userInfo.csv", "r")
-    reader = csv.reader(f)
-    Users = {}
-    users_array = []
-    for row in reader:
-        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
-                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
-        users_array.append(row[0])
-    print(users_array, Users)
-    return users_array
+    names = []
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+
+    query = ("SELECT name FROM stats")
+
+    cursor.execute(query)
+
+    for i in cursor:
+        names.append(i[0])
+        # print(i[0])
+
+    cursor.close()
+    cnx.close()
+    # print(names)
+    return names
 
 
-def get_att(name):
-    f = open("userInfo.csv", "r")
-    reader = csv.reader(f)
-    Users = {}
-    users_array = []
-    for row in reader:
-        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
-                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
-        users_array.append(row[0])
-    att = str(Users[name]["att"])
-    return att
-
-def get_def(name):
-    f = open("userInfo.csv", "r")
-    reader = csv.reader(f)
-    Users = {}
-    users_array = []
-    for row in reader:
-        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
-                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
-        users_array.append(row[2])
-    defense = str(Users[name]["def"])
-    return defense
+def get_stats(name):
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    query = (f"SELECT * FROM stats WHERE name = '{name}'")
+    stats = []
+    cursor.execute(query)
+    for i in cursor:
+        stats.append(i)
+    cursor.close()
+    cnx.close()
+    return stats[0]
 
 
-def get_curr_hp(name):
-    f = open("userInfo.csv", "r")
-    reader = csv.reader(f)
-    Users = {}
-    users_array = []
-    for row in reader:
-        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
-                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
-        users_array.append(row[3])
-    curr_hp = str(Users[name]["curr_hp"])
-    return curr_hp
+def get_att(n):
+    att = get_stats(n)[1]
+    return str(att)
 
 
-def get_max_hp(name):
-    f = open("userInfo.csv", "r")
-    reader = csv.reader(f)
-    Users = {}
-    users_array = []
-    for row in reader:
-        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
-                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
-        users_array.append(row[4])
-    max_hp = str(Users[name]["max_hp"])
-    return max_hp
+def get_def(n):
+    defense = get_stats(n)[2]
+    return str(defense)
 
 
-def get_coins(name):
-    f = open("userInfo.csv", "r")
-    reader = csv.reader(f)
-    Users = {}
-    users_array = []
-    for row in reader:
-        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
-                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
-        users_array.append(row[5])
-    coins = str(Users[name]["coins"])
-    return coins
+def get_curr_hp(n):
+    curr_hp = get_stats(n)[3]
+    return str(curr_hp)
 
 
-def get_gem(name):
-    f = open("userInfo.csv", "r")
-    reader = csv.reader(f)
-    Users = {}
-    users_array = []
-    for row in reader:
-        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
-                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
-        users_array.append(row[6])
-    gem = str(Users[name]["gem"])
-    return gem
+def get_max_hp(n):
+    max_hp = get_stats(n)[4]
+    return str(max_hp)
 
 
-def get_curr_xp(name):
-    f = open("userInfo.csv", "r")
-    reader = csv.reader(f)
-    Users = {}
-    users_array = []
-    for row in reader:
-        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
-                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
-        users_array.append(row[7])
-    curr_xp = str(Users[name]["curr_xp"])
-    return curr_xp
+def get_coins(n):
+    coins = get_stats(n)[5]
+    return str(coins)
 
 
-def get_max_xp(name):
-    f = open("userInfo.csv", "r")
-    reader = csv.reader(f)
-    Users = {}
-    users_array = []
-    for row in reader:
-        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
-                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
-        users_array.append(row[8])
-    max_xp = str(Users[name]["max_xp"])
-    return max_xp
+def get_gem(n):
+    gem = get_stats(n)[6]
+    return str(gem)
 
 
-def get_level(name):
-    f = open("userInfo.csv", "r")
-    reader = csv.reader(f)
-    Users = {}
-    users_array = []
-    for row in reader:
-        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
-                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
-        users_array.append(row[9])
-    print(Users[name]["level"])
-    level = str(Users[name]["level"])
-    return level
+def get_curr_xp(n):
+    curr_xp = get_stats(n)[7]
+    return str(curr_xp)
 
 
-def set_coin(name,coins):
-    f = open("userInfo.csv", "r")
-    reader = csv.reader(f)
-    Users = {}
-    for row in reader:
-        Users[row[0]] = {"att": row[1], "def": row[2], "curr_hp": row[3], "max_hp": row[4], "coins": row[5],
-                         "gem": row[6], "curr_xp": row[7], "max_xp": row[8], "level": row[9]}
-        print(row[0], name)
-        if row[0] == name:
-            Users[name]['coins'] = coins
+def get_max_xp(n):
+    max_xp = get_stats(n)[8]
+    return str(max_xp)
 
-set_coin("tom", 10000)
+
+def get_level(n):
+    level = get_stats(n)[9]
+    return str(level)
+
+
+def set_hp(name, new_hp):
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    query = f"UPDATE `kogrpg`.`stats` SET `curr_hp` = '{new_hp}' WHERE (`name` = '{name}');"
+    cursor.execute(query)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+    return True
+
+
+def set_xp(name, new_xp):
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    new_xp += int(get_curr_xp(name))
+    query = f"UPDATE `kogrpg`.`stats` SET `curr_xp` = '{new_xp}' WHERE (`name` = '{name}');"
+    cursor.execute(query)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+    return True
+
+
+def set_coins(name, coins):
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    coins += int(get_coins(name))
+    query = f"UPDATE `kogrpg`.`stats` SET `coins` = '{coins}' WHERE (`name` = '{name}');"
+    cursor.execute(query)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+    return True
+
+
+def you_died(name):
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    lvl = int(get_level(name))-1
+    if lvl <= 1:
+        query = f"UPDATE `kogrpg`.`stats` SET `curr_hp` = '{get_max_hp(name)}', `curr_xp` = '0', `level` = '1' WHERE (`name` = '{name}');"
+    else:
+        query = f"UPDATE `kogrpg`.`stats` SET `curr_hp` = '{get_max_hp(name)}', `curr_xp` = '0', `level` = '{lvl}' WHERE (`name` = '{name}');"
+    cursor.execute(query)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+    return True
+

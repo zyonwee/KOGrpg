@@ -1,58 +1,115 @@
-import csv
 import random
+import db
 
 
-def get_monster(level):
-    f = open("monsters.csv", "r")
-    reader = csv.reader(f)
-    monsterarray = []
-    monster ={}
-    for row in reader:
-        monster[row[0]] = {"emoji":row[1], "level": row[2], "itemdrop": row[3], "desc": row[4], "chance": row[5],
-                           "coins": row[6], "att": row[7], "hp": row[8], "xp": row[9], "quantity": row[10]}
-        if int(monster[row[0]]["level"]) <= int(level):
-            monsterarray.append(row[0])
-    number = random.randint(0, len(monsterarray)-1)
-    chosen = monsterarray[number]
-    print(chosen, monsterarray)
-    return chosen
+def get_monster(name):
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    monster = []
+    query = (f"SELECT * FROM monsters WHERE name = '{name}'")
+    cursor.execute(query)
+    for i in cursor:
+        monster.append(i)
+        # print(i[0])
+
+    cursor.close()
+    cnx.close()
+    return monster[0]
+
+
+def get_emoji(n):
+    emoji = get_monster(n)[1]
+    return str(emoji)
+
+
+def get_level(n):
+    level = get_monster(n)[2]
+    return str(level)
+
+
+def get_itemdrop(n):
+    itemdrop = get_monster(n)[3]
+    return str(itemdrop)
+
+
+def get_desc(n):
+    desc = get_monster(n)[4]
+    return str(desc)
+
+
+def get_chance(n):
+    chance = get_monster(n)[5]
+    return str(chance)
+    
+
+def get_coins(n):
+    coins = get_monster(n)[6]
+    return str(coins)
+
+
+def get_att(n):
+    att = get_monster(n)[7]
+    return str(att)
+
+
+def get_hp(n):
+    hp = get_monster(n)[8]
+    return str(hp)
+
+
+def get_xp(n):
+    xp = get_monster(n)[9]
+    return str(xp)
+
+
+def get_quantity(n):
+    quantity = get_monster(n)[10]
+    return str(quantity)
+
+
+def chosen(level):
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    monster = []
+    query = (f"SELECT * FROM monsters WHERE level <= '{level}'")
+    cursor.execute(query)
+    for i in cursor:
+        monster.append(i)
+    cursor.close()
+    cnx.close()
+    number = random.randint(0, len(monster)-1)
+    chosen = monster[number]
+    return chosen[0]
 
 
 def get_drops(name):
-    f = open("monsters.csv", "r")
-    reader = csv.reader(f)
-    monster = {}
-    for row in reader:
-        monster[row[0]] = {"emoji":row[1], "level": row[2], "itemdrop": row[3], "desc": row[4], "chance": row[5],
-                           "coins": row[6], "att": row[7], "hp": row[8], "xp": row[9],  "quantity": row[10]}
-    if random.randint(1, int(monster[name]["chance"])) == 1:
-        quantity = random.randint(1, int(monster[name]["quantity"]))
-        drops = [quantity, monster[name]["itemdrop"]]
+    if random.randint(1, int(get_chance(name))) == 1:
+        quantity = random.randint(1, int(get_quantity(name)))
+        drops = [quantity, get_itemdrop(name)]
         return drops
     else:
         return "Hmm.. nothing here"
 
 
 def fight(chosen, att, defense, hp, max_hp):
-    f = open("monsters.csv", "r")
-    reader = csv.reader(f)
-    monster = {}
-    for row in reader:
-        monster[row[0]] = {"emoji":row[1], "level": row[2], "itemdrop": row[3], "desc": row[4], "chance": row[5],
-                           "coins": row[6], "att": row[7], "hp": row[8], "xp": row[9],  "quantity": row[10]}
-    m_att = int(monster[chosen]["att"])
-    m_att = random.randint(round(m_att*0.8),round(m_att*1.1))
-    m_hp = int(monster[chosen]["hp"])
-    m_hp = random.randint(round(m_hp*0.8),round(m_hp*1.1))
-    m_coins = int(monster[chosen]["coins"])
-    xp =  int(monster[chosen]["xp"])
-    xp = random.randint(round(xp*0.6),round(xp*1.1))
+    m_att = int(get_att(chosen))
+    m_att = random.randint(round(m_att*0.8), round(m_att*1.1))
+
+    m_hp_start = m_hp = int(get_hp(chosen))
+    m_hp = random.randint(round(m_hp*0.8), round(m_hp*1.1))
+
+    m_coins = int(get_coins(chosen))
+
+    xp = int(get_xp(chosen))
+    xp = random.randint(round(xp*0.6), round(xp*1.1))
+
     att = int(att)
-    hp = int(hp)
+    hp_start = hp = int(hp)
     defense = int(defense)
     counter_dealt = 0
     counter_taken = 0
-    emoji = monster[chosen]["emoji"]
+    emoji = get_emoji(chosen)
+
     while m_hp > 0 and int(hp) > 0:
         m_hp -= att
         counter_taken += att
@@ -63,16 +120,19 @@ def fight(chosen, att, defense, hp, max_hp):
         print(att, hp)
 
     if m_hp <= 0:
-        string = "Oh No! You loss **" + str(counter_taken) + "** hp. You attacked with **" + str(counter_dealt) +\
+        string = "Oh No! You loss **" + str(counter_dealt) + "** hp. You attacked with **" + str(m_hp_start) +\
                  "** dmg. \n:heart:  " + str(hp) + "/" + str(max_hp) + "\nCongrats! You Killed **" +\
-                 chosen + monster[chosen]["emoji"] + "**"
+                 chosen + emoji + "**"
         coins = random.randint(round(m_coins*0.8), round(m_coins*1.4))
         print(string, coins, xp)
         return [string, coins, xp, True, hp]
+
     if hp <= 0:
-        string = "Oh No! You loss " + str(counter_taken) + " hp. You lost to " + chosen + ". Exp Reset :( "
+        string = "Oh No! You loss " + str(hp_start) + " hp. You lost to **" + chosen + emoji + "**. Exp Reset :( "
         print(string)
-        return [string, 0, 0, False]
+        return [string, 0, 0, False, hp]
+
+
 
 
 

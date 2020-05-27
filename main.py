@@ -2,7 +2,9 @@ import discord
 import stats as s
 import items as item
 import monsters as mon
+import db
 
+cnx = db.cnx()
 client = discord.Client()
 
 @client.event
@@ -22,14 +24,14 @@ async def on_message(message):
                 if i == str(message.author).strip():
                    new = False
             if new:
-                with open("userInfo.csv", "a") as f:
-                    name = message.author
-                    defense = att = level = 1
-                    max_xp = curr_hp = max_hp = 100
-                    coins = gem = curr_xp = 0
-                    f.write(f"{name},{att},{defense},{curr_hp},{max_hp},{coins},{gem},{curr_xp},{max_xp},{level}\n")
-                    await message.channel.send("Welcome New Player :baby: !! :dove: **" + str(message.author)[:-5] + "**" +
-                                               "\n Do `kog p` or `kog profile` to see your profile! :D")
+                cursor = cnx.cursor()
+                query = (f"INSERT INTO `kogrpg`.`stats` (`name`) VALUES ('{n}')")
+                cursor.execute(query)
+                cnx.commit()
+                cursor.close()
+                cnx.close()
+                await message.channel.send("Welcome New Player :baby: !! :dove: **" + str(message.author)[:-5] + "**" +
+                                           "\n Do `kog p` or `kog profile` to see your profile! :D")
             else:
                 await message.channel.send("Shalom !! :dove: **" + str(message.author)[:-5] + "**")
         except Exception as e:
@@ -60,14 +62,19 @@ async def on_message(message):
     if message.content.startswith("kog help" or "kog ?"):
         embed = discord.Embed(title="Welcome to KoGrpg Help", description="Listed are some basic Commands")
         embed.add_field(name="Interfacing Commands", value="`kog` `kog profile` `kog shop`")
+        embed.add_field(name="Action Commands", value="`kog hunt`")
+
         await message.channel.send(content=None, embed=embed)
 
     if message.content.startswith("kog hunt"):
-        result = mon.fight(mon.get_monster(s.get_level(n)), s.get_att(n), s.get_def(n), s.get_curr_hp(n), s.get_max_hp(n))
-        print(result)
+        result = mon.fight(mon.chosen(s.get_level(n)), s.get_att(n), s.get_def(n), s.get_curr_hp(n), s.get_max_hp(n))
         if result[3]:
+            s.set_hp(n, result[4])
+            s.set_xp(n, result[2])
+            s.set_coins(n, result[1])
             await message.channel.send(content=result[0])
         else:
+            s.you_died(n)
             await message.channel.send(content=result[0])
 # client.loop.create_task(update_stats())
 client.run('NzE0ODM0NTc2ODk5NTcxNzkz.Xs0o0Q.vKw8tmtsg45zX9Y9vJQW47B5wak')

@@ -60,6 +60,7 @@ def get_all_shop():
         if item[row[0]]["shop"] == "basic":
             item_array.append(row[0])
     shop = item_array
-    print(shop)
+    # print(shop)
     return shop
-get_all_shop()
+# get_all_shop()
+
