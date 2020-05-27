@@ -1,2 +1,6 @@
 # KOGrpg
-I need help with updating csv files. i dont know how to do dat LOL
+Working on :
+  Inventory
+  Item Shop
+  Gambling
+  Balancing
