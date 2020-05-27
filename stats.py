@@ -33,12 +33,12 @@ def get_stats(name):
 
 
 def get_att(n):
-    att = get_stats(n)[1]
+    att = get_stats(n)[1] + 1 + 2 * (int(get_level(n)) - 1)
     return str(att)
 
 
 def get_def(n):
-    defense = get_stats(n)[2]
+    defense = get_stats(n)[2] + 1 + 2*(int(get_level(n)) - 1)
     return str(defense)
 
 
@@ -48,7 +48,7 @@ def get_curr_hp(n):
 
 
 def get_max_hp(n):
-    max_hp = get_stats(n)[4]
+    max_hp = get_stats(n)[4] + 100 + 10*(int(get_level(n)) - 1)
     return str(max_hp)
 
 
@@ -68,7 +68,11 @@ def get_curr_xp(n):
 
 
 def get_max_xp(n):
-    max_xp = get_stats(n)[8]
+    realm = round(int(get_level(n)) // 10)
+    L = int(get_level(n))
+    if realm == 0:
+        realm = 1
+    max_xp = (50 * L * L - 50 * L) + realm * 10
     return str(max_xp)
 
 
@@ -117,12 +121,43 @@ def you_died(name):
     cursor = cnx.cursor()
     lvl = int(get_level(name))-1
     if lvl <= 1:
-        query = f"UPDATE `kogrpg`.`stats` SET `curr_hp` = '{get_max_hp(name)}', `curr_xp` = '0', `level` = '1' WHERE (`name` = '{name}');"
+        query = f"UPDATE `kogrpg`.`stats` SET `curr_xp` = '0', `level` = '1' WHERE (`name` = '{name}');"
     else:
-        query = f"UPDATE `kogrpg`.`stats` SET `curr_hp` = '{get_max_hp(name)}', `curr_xp` = '0', `level` = '{lvl}' WHERE (`name` = '{name}');"
+        query = f"UPDATE `kogrpg`.`stats` SET `curr_xp` = '0', `level` = '{lvl}' WHERE (`name` = '{name}');"
     cursor.execute(query)
     cnx.commit()
     cursor.close()
     cnx.close()
+    return True
+
+
+def heal(name):
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    query = f"UPDATE `kogrpg`.`stats` SET `curr_hp` = '{get_max_hp(name)}' WHERE (`name` = '{name}');"
+    cursor.execute(query)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+    return True
+
+
+def check_level(n):
+    xp = int(get_curr_xp(n))
+    max_xp = int(get_max_xp(n))
+    levelup = False
+    while xp >= max_xp:
+        lvl = int(get_level(n)) + 1
+        xp -= max_xp
+        levelup = True
+        max_xp
+    if levelup:
+        cnx = db.cnx()
+        cursor = cnx.cursor()
+        query = f"UPDATE `kogrpg`.`stats` SET `curr_xp` = '{xp}', `level` = '{lvl}', `curr_hp` = '{get_max_hp(n)}' WHERE (`name` = '{n}');"
+        cursor.execute(query)
+        cnx.commit()
+        cursor.close()
+        cnx.close()
     return True
 

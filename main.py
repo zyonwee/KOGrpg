@@ -62,7 +62,7 @@ async def on_message(message):
     if message.content.startswith("kog help" or "kog ?"):
         embed = discord.Embed(title="Welcome to KoGrpg Help", description="Listed are some basic Commands")
         embed.add_field(name="Interfacing Commands", value="`kog` `kog profile` `kog shop`")
-        embed.add_field(name="Action Commands", value="`kog hunt`")
+        embed.add_field(name="Action Commands", value="`kog hunt` `kog heal`")
 
         await message.channel.send(content=None, embed=embed)
 
@@ -72,9 +72,21 @@ async def on_message(message):
             s.set_hp(n, result[4])
             s.set_xp(n, result[2])
             s.set_coins(n, result[1])
-            await message.channel.send(content=result[0])
+            s.check_level(n)
+            drops = mon.get_drops(result[5])
+            if drops[1] == "Hmm.. nothing here":
+                await message.channel.send(content=result[0] + "\n" + drops[1] + ". Earned **" + str(result[2]) + "xp**")
+            else:
+                await message.channel.send(content=result[0] + "\nYou've Obtained **" + drops[0] + " " + drops[1] + "**" + " and Earned **" + str(result[2]) + "xp**")
         else:
             s.you_died(n)
+            s.heal(n)
             await message.channel.send(content=result[0])
+
+    if message.content.startswith("kog heal"):
+        s.heal(n)
+        await message.channel.send(content="Your health is restored to full, 1 <:lifepotion:715245405918593207> consumed.")
+
+
 # client.loop.create_task(update_stats())
 client.run('NzE0ODM0NTc2ODk5NTcxNzkz.Xs0o0Q.vKw8tmtsg45zX9Y9vJQW47B5wak')

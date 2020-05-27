@@ -85,10 +85,10 @@ def chosen(level):
 def get_drops(name):
     if random.randint(1, int(get_chance(name))) == 1:
         quantity = random.randint(1, int(get_quantity(name)))
-        drops = [quantity, get_itemdrop(name)]
+        drops = [str(quantity), str(get_itemdrop(name))]
         return drops
     else:
-        return "Hmm.. nothing here"
+        return ["", "Hmm.. nothing here"]
 
 
 def fight(chosen, att, defense, hp, max_hp):
@@ -116,21 +116,19 @@ def fight(chosen, att, defense, hp, max_hp):
         if (m_att - int(defense)) > 0:
             hp -= (m_att - int(defense))
             counter_dealt += (m_att - int(defense))
-        print(m_att, m_hp)
-        print(att, hp)
 
     if m_hp <= 0:
         string = "Oh No! You loss **" + str(counter_dealt) + "** hp. You attacked with **" + str(m_hp_start) +\
                  "** dmg. \n:heart:  " + str(hp) + "/" + str(max_hp) + "\nCongrats! You Killed **" +\
                  chosen + emoji + "**"
         coins = random.randint(round(m_coins*0.8), round(m_coins*1.4))
-        print(string, coins, xp)
-        return [string, coins, xp, True, hp]
+        return [string, coins, xp, True, hp, chosen]
 
     if hp <= 0:
-        string = "Oh No! You loss " + str(hp_start) + " hp. You lost to **" + chosen + emoji + "**. Exp Reset :( "
-        print(string)
-        return [string, 0, 0, False, hp]
+        string = "Oh No! You loss " + str(hp_start) + " hp. You lost to **" + chosen +" "+ emoji + "**. Exp Reset :( "
+        return [string, 0, 0, False, hp, chosen]
+
+
 
 
 
