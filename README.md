@@ -4,3 +4,4 @@
   Item Shop<br>
   Gambling<br>
   Balancing<br>
+  Cooldown
