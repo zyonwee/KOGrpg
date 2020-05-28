@@ -1,7 +1,7 @@
 # KOGrpg
 <strong>Working on :</strong><br>
-  Inventory<br>
-  Item Shop<br>
-  Gambling<br>
-  Balancing<br>
+  Equipment Shop<br>
+  Pet Fight Seuquence<br>
+  1 v 1<br>
+  Evolution<br>
   Cooldown
