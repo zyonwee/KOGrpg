@@ -18,37 +18,36 @@ def get_stats(name):  # get stats of item
     cnx.close()
     return stats[0]
 
-# print(get_stats("life potion")[1])
+print(get_stats("life potion"))
 
 
 def get_item_emoji(n):
-    emoji = get_stats(n)[1]
+    emoji = get_stats(n)[2]
     return str(emoji)
-    return emoji
 
 
 def get_type(n):
-    typed = get_stats(n)[2]
+    typed = get_stats(n)[3]
     return str(typed)
-    return typed
 
 
 def get_desc(n):
-    desc = get_stats(n)[3]
+    desc = get_stats(n)[4]
     return str(desc)
-    return desc
 
 
 def get_price(n):
-    price = get_stats(n)[4]
+    price = get_stats(n)[5]
     return str(price)
-    return price
 
 
 def get_shop(n):
-    shop = get_stats(n)[5]
+    shop = get_stats(n)[6]
     return str(shop)
-    return shop
+
+def get_boosts(n):
+    boosts = get_stats(n)[7]
+    return str(boosts)
 
 
 def get_all_eggshop():
@@ -72,11 +71,11 @@ def get_all_shop():
     names = []
     cnx = db.cnx()
     cursor = cnx.cursor()
-    query = (f"SELECT * FROM items WHERE shop = 'basic'")
+    query = (f"SELECT * FROM items WHERE shop = 'basic' ORDER BY `id` ASC")
 
     cursor.execute(query)
     for i in cursor:
-        names.append(i[0])
+        names.append(i[1])
         # print(i[0])
 
     cursor.close()
@@ -85,37 +84,52 @@ def get_all_shop():
     return names
 
 
-def check_buy(i, n):
-    print(get_price(i), s.get_coins(n))
-    if get_price(i) < s.get_coins(n):
-        return True
-    return False
 
 
 def buy(i, n):
-    new_coin = int(s.get_coins(n)) - int(get_price(i))
+    t = get_type(i)
+    print(get_price(i), s.get_coins(n))
     cnx = db.cnx()
-    cursor = cnx.cursor()
-    query = f"UPDATE `kogrpg`.`stats` SET `coins` = '{new_coin}' WHERE (`name` = '{n}');"
-    cursor.execute(query)
-    cnx.commit()
-    cursor.close()
+    if int(get_price(i)) < int(s.get_coins(n)):
+        if t != ("att" or "def"):
+            new_coin = int(s.get_coins(n)) - int(get_price(i))
+            cursor = cnx.cursor()
+            query = f"UPDATE `kogrpg`.`stats` SET `coins` = '{new_coin}' WHERE (`name` = '{n}');"
+            cursor.execute(query)
+            cnx.commit()
+            cursor.close()
+            t = get_type(i)
+            if i in s.get_items(n).keys():
+                numb = 1 + int(s.get_items(n)[i])
+                cursor = cnx.cursor()
+                query = f"UPDATE `kogrpg`.`inventory` SET `name` = '{n}', `item` = '{i}', `number` = '{numb}' WHERE (`item` = '{i}');"
+                cursor.execute(query)
+                cnx.commit()
+                cursor.close()
+                cnx.close()
+                return "Yes"
+            else:
+                cursor = cnx.cursor()
+                query = f"INSERT INTO `kogrpg`.`inventory` (`name`, `item`, `type`) VALUES ('{n}', '{i}', '{t}');"
+                cursor.execute(query)
+                cnx.commit()
+                cursor.close()
+                cnx.close()
+                return "Yes"
+        elif i not in s.get_items(n).keys():
+            cursor = cnx.cursor()
+            query = f"INSERT INTO `kogrpg`.`inventory` (`name`, `item`, `type`) VALUES ('{n}', '{i}', '{t}');"
+            cursor.execute(query)
+            cnx.commit()
+            cursor.close()
+            cnx.close()
+            return "Yes"
 
-    if i in s.get_items(n).keys():
-        numb = 1 + int(s.get_items(n)[i])
-        cursor = cnx.cursor()
-        query = f"UPDATE `kogrpg`.`inventory` SET `name` = '{n}', `item` = '{i}', `number` = '{numb}' WHERE (`item` = '{i}');"
-        cursor.execute(query)
-        cnx.commit()
-        cursor.close()
-        cnx.close()
+        else:
+            return "Repeat"
+
     else:
-        cursor = cnx.cursor()
-        query = f"INSERT INTO `kogrpg`.`inventory` (`name`, `item`) VALUES ('{n}', '{i}');"
-        cursor.execute(query)
-        cnx.commit()
-        cursor.close()
-        cnx.close()
+        return "Poor"
 
 
 def decrease_item(i, n):
@@ -161,3 +175,71 @@ def random_pet(i):
         pets = random.choice(p.get_allStage("In-Training"))
         return pets
 
+
+def equip(i, n):
+    user_items = s.get_items(n).keys()
+    typ = get_type(i)
+
+    if typ == "att":
+        if i in user_items and s.get_items(n)[i] != 0:
+
+            cnx = db.cnx()
+
+            cursor = cnx.cursor()
+            query = f"UPDATE `kogrpg`.`inventory` SET `equip` = 'FALSE' WHERE (`type` = 'att');"
+            cursor.execute(query)
+            cnx.commit()
+            cursor.close()
+
+            cursor = cnx.cursor()
+            query = f"UPDATE `kogrpg`.`inventory` SET `equip` = 'TRUE' WHERE (`item` = '{i}');"
+            cursor.execute(query)
+            cnx.commit()
+            cursor.close()
+            return True
+        else:
+            return False
+
+    if typ == "def":
+        if i in user_items and s.get_items(n)[i] != 0:
+            cnx = db.cnx()
+
+            cursor = cnx.cursor()
+            query = f"UPDATE `kogrpg`.`inventory` SET `equip` = 'FALSE' WHERE (`type` = 'def');"
+            cursor.execute(query)
+            cnx.commit()
+            cursor.close()
+
+            cnx = db.cnx()
+            cursor = cnx.cursor()
+            query = f"UPDATE `kogrpg`.`inventory` SET `equip` = 'TRUE' WHERE (`item` = '{i}');"
+            cursor.execute(query)
+            cnx.commit()
+            cursor.close()
+            return True
+        else:
+            return False
+
+def get_Equipped(n):
+        cnx = db.cnx()
+        cursor = cnx.cursor()
+        estack = [0, 0]
+        query = f"SELECT `item` FROM `kogrpg`.`inventory` WHERE (`type` = 'att' and `name` = '{n}' and `equip` = 'TRUE');"
+        cursor.execute(query)
+        for i in cursor:
+            print(i)
+            estack[0] = i[0]
+        cursor.close()
+
+        cnx = db.cnx()
+        cursor = cnx.cursor()
+        query = f"SELECT `item` FROM `kogrpg`.`inventory` WHERE (`type` = 'def' and `name` = '{n}' and `equip` = 'TRUE');"
+        cursor.execute(query)
+
+        for i in cursor:
+            estack[1] = i[0]
+        cursor.close()
+
+        return estack
+
+print(get_Equipped("OneForFourKay#5753"))

@@ -1,6 +1,6 @@
 import db
 import pets as p
-
+import items as item
 def get_allName():
     names = []
     cnx = db.cnx()
@@ -41,7 +41,7 @@ def get_items(name):
     query = (f"SELECT * FROM inventory WHERE name = '{name}'")
     items = {}
     cursor.execute(query)
-    for (id, user, item, quantity, equip) in cursor:
+    for (id, user, item, quantity, equip, type) in cursor:
         items[item] = quantity
     cursor.close()
     cnx.close()
@@ -49,15 +49,22 @@ def get_items(name):
 # print(get_items("OneForFourKay#5753").keys())
 
 
-
 def get_att(n):
+    name_weapon = item.get_Equipped(n)[0]
     att = get_stats(n)[1] + 1 + 2 * (int(get_level(n)) - 1)
+    if name_weapon:
+        boosts = int(item.get_boosts(name_weapon))
+        att += boosts
     return str(att)
 
 
 def get_def(n):
+    name_shield = item.get_Equipped(n)[1]
     defense = get_stats(n)[2] + 1 + 2*(int(get_level(n)) - 1)
-    return str(defense)
+    if name_shield:
+        boosts = int(item.get_boosts(name_shield))
+        defense += boosts
+        return str(defense)
 
 
 def get_curr_hp(n):
@@ -197,5 +204,6 @@ def check_player_new(n):
             if i == str(n).strip():
                 new = False
         return new
+
 
 

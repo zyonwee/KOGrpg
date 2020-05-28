@@ -119,14 +119,14 @@ def fight(chosen, att, defense, hp, max_hp, level):
             hp -= abs((m_att - int(defense)))
             counter_dealt += abs((m_att - int(defense)))
         print(m_hp, hp)
-    if m_hp <= 0:
+    if hp > 0:
         string = "Oh No! You loss **" + str(counter_dealt) + "** hp. You attacked with **" + str(m_hp_start) +\
                  "** dmg. \n:heart:  " + str(hp) + "/" + str(max_hp) + "\nCongrats! You Killed **" +\
                  chosen + emoji + "**"
         coins = random.randint(round(m_coins*0.8), round(m_coins*1.4))
         return [string, coins, xp, True, hp, chosen]
 
-    if hp <= 0:
+    if m_hp > 0:
         string = "Oh No! You loss " + str(hp_start) + " hp. You lost to **" + chosen +" "+ emoji + "**. Exp Reset :( "
         return [string, 0, 0, False, hp, chosen]
 

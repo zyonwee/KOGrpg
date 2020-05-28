@@ -70,9 +70,9 @@ def get_myPets(name):
     query = (f"SELECT * FROM mypets WHERE name = '{name}'")
     mypets = {}
     cursor.execute(query)
-    for (Name, id, Stage, Type, Attribute, pets, Equip_Slots, HP, XP, Atk, Def, level, moves, Image_link) in cursor:
+    for (Name, id, Stage, Type, attr, pets, Equip_Slots, HP, XP, Atk, Def, level, moves, Image_link) in cursor:
         mypets[pets] = {"level": level, "Image_link": Image_link, "pets": pets, "equip": Equip_Slots, "hp": HP,
-                        "xp": XP, "att": Atk, "def": Def, "stage": Stage}
+                        "xp": XP, "att": Atk, "def": Def, "stage": Stage, "attr":attr}
     cursor.close()
     cnx.close()
     return mypets
@@ -83,6 +83,11 @@ def max_hp(p, l):
     maxhp = base_hp * l
     return int(maxhp)
 
+
+def pet_att(p, l, n):
+    pet = get_myPets(n)
+    base_att = int(get_att(p))/50 + pet[p]["att"]
+    return int(base_att)
 
 
 
@@ -137,6 +142,22 @@ def getMain(n):
         cursor = cnx.cursor()
         link = []
         query = f"SELECT `Image link` FROM mypets WHERE (`Equip Slots` = 'Main Pet' and `name` = '{n}');"
+        cursor.execute(query)
+        for i in cursor:
+            link.append(i)
+        cnx.commit()
+        cursor.close()
+        return link[0][0]
+    except:
+        return ""
+
+
+def getMain_Name(n):
+    try:
+        cnx = db.cnx()
+        cursor = cnx.cursor()
+        link = []
+        query = f"SELECT `pets` FROM mypets WHERE (`Equip Slots` = 'Main Pet' and `name` = '{n}');"
         cursor.execute(query)
         for i in cursor:
             link.append(i)
