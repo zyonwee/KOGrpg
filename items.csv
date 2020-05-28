@@ -1,2 +1,7 @@
-Egg Common,<:EggCommon:714959842846179428>,consumable,Common Egg? Maybe a Chicken. Maybe A Dog.,100,basic
-Egg Uncommon,<:EggUncommon:714970054877511711>,consumable,Uncommon Egg. You dont eat them everyday,5000,basic
+name,emoji,type,desc,price,shop
+"Egg Common",<:EggCommon:714959842846179428>,pet,"Common Egg? Maybe a Chicken. Maybe A Dog.",100,egg
+"Egg Uncommon",<:EggUncommon:714970054877511711>,pet,"Uncommon Egg. You dont eat them everyday",5000,egg
+"Life Potion",<:lifepotion:715245405918593207>,hp,"Consume by `kog heal`",25,basic
+littleBlood,<:littleBlood:715476281227214892>,misc,"Its either my blood, or yours.",NULL,null
+littleFangs,<:littlefangs:715474159538405406>,misc,"Omg. Someone's not brushing Teeth",NULL,null
+littleOoze,<:littleOoze:715475989353857064>,misc,"Is this... Mucus ?",NULL,null

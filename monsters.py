@@ -91,17 +91,19 @@ def get_drops(name):
         return ["", "Hmm.. nothing here"]
 
 
-def fight(chosen, att, defense, hp, max_hp):
-    m_att = int(get_att(chosen))
-    m_att = random.randint(round(m_att*0.8), round(m_att*1.1))
+def fight(chosen, att, defense, hp, max_hp, level):
+    level = int(level)
+    m_att = int(get_att(chosen)) + 2 * (level - 1)
 
-    m_hp_start = m_hp = int(get_hp(chosen))
-    m_hp = random.randint(round(m_hp*0.8), round(m_hp*1.1))
+    m_att = random.randint(round(m_att*0.5), round(m_att*1.5))
+
+    m_hp = int(get_hp(chosen)) + 50 + 5 * (level - 1)
+    m_hp_start = m_hp = random.randint(round(m_hp*0.5), round(m_hp*1.5))
 
     m_coins = int(get_coins(chosen))
 
     xp = int(get_xp(chosen))
-    xp = random.randint(round(xp*0.6), round(xp*1.1))
+    xp = random.randint(round(xp*0.5), round(xp*1.5))
 
     att = int(att)
     hp_start = hp = int(hp)
@@ -113,10 +115,10 @@ def fight(chosen, att, defense, hp, max_hp):
     while m_hp > 0 and int(hp) > 0:
         m_hp -= att
         counter_taken += att
-        if (m_att - int(defense)) > 0:
-            hp -= (m_att - int(defense))
-            counter_dealt += (m_att - int(defense))
-
+        if (m_att*2 - int(defense)) > 0:
+            hp -= abs((m_att - int(defense)))
+            counter_dealt += abs((m_att - int(defense)))
+        print(m_hp, hp)
     if m_hp <= 0:
         string = "Oh No! You loss **" + str(counter_dealt) + "** hp. You attacked with **" + str(m_hp_start) +\
                  "** dmg. \n:heart:  " + str(hp) + "/" + str(max_hp) + "\nCongrats! You Killed **" +\

@@ -1,4 +1,5 @@
 import db
+import pets as p
 
 def get_allName():
     names = []
@@ -19,6 +20,7 @@ def get_allName():
     return names
 
 
+
 def get_stats(name):
     cnx = db.cnx()
     cursor = cnx.cursor()
@@ -30,6 +32,22 @@ def get_stats(name):
     cursor.close()
     cnx.close()
     return stats[0]
+
+
+
+def get_items(name):
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    query = (f"SELECT * FROM inventory WHERE name = '{name}'")
+    items = {}
+    cursor.execute(query)
+    for (id, user, item, quantity, equip) in cursor:
+        items[item] = quantity
+    cursor.close()
+    cnx.close()
+    return items
+# print(get_items("OneForFourKay#5753").keys())
+
 
 
 def get_att(n):
@@ -45,7 +63,6 @@ def get_def(n):
 def get_curr_hp(n):
     curr_hp = get_stats(n)[3]
     return str(curr_hp)
-
 
 def get_max_hp(n):
     max_hp = get_stats(n)[4] + 100 + 10*(int(get_level(n)) - 1)
@@ -74,6 +91,16 @@ def get_max_xp(n):
         realm = 1
     max_xp = (50 * L * L - 50 * L) + realm * 10
     return str(max_xp)
+
+
+def get_progress(n):
+    progress = str(round((int(get_curr_xp(n))/int(get_max_hp(n))*100)  ,2))
+    return str(progress)
+
+
+def get_realm(n):
+    realm = round(int(get_level(n)) // 10)
+    return str(realm)
 
 
 def get_level(n):
@@ -159,5 +186,16 @@ def check_level(n):
         cnx.commit()
         cursor.close()
         cnx.close()
-    return True
+        return True
+    return False
+
+
+def check_player_new(n):
+        array = get_allName()
+        new = True
+        for i in array:
+            if i == str(n).strip():
+                new = False
+        return new
+
 
