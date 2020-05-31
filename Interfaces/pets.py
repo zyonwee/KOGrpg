@@ -235,11 +235,18 @@ def UpdateEvo(now, later, n):
     # defense = mp.max_def_l(later, mp.get_level(now, n))
     # att = mp.max_att_l(later, mp.get_level(now, n))
     # `Atk` = '{att}', `Def` = '{defense}' ,`HP` = '{int(hp)}',
+    print(stage, attr)
+
     link = ap.get_img(later)
     lvl = mp.get_level_l(now, n)
     cnx = db.cnx()
     cursor = cnx.cursor()
+    query = f"UPDATE `kogrpg`.`mypets` SET `Equip Slots` = 'NONE' WHERE (`name` = '{n}');"
+    cursor.execute(query)
+    cnx.commit()
+    cursor.close()
 
+    cursor = cnx.cursor()
     query = f"UPDATE `kogrpg`.`mypets` SET `Stage` = '{stage}', `Attribute` = '{attr}', `pets` = '{later}', " \
             f"`Equip Slots` = 'Main Pet', `level` = '{lvl}', `Image link` = '{link}' WHERE (`pets` = '{now}');"
     cursor.execute(query)

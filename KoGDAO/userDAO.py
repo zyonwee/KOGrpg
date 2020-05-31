@@ -16,6 +16,17 @@ def get_stats(name):
     return stats[0]
 
 
+def clear():
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    query = f"DELETE FROM `kogrpg`.`inventory` WHERE (`number` = '0')"
+    stats = []
+    cursor.execute(query)
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+# clear()
+
 def get_items(name):
     cnx = db.cnx()
     cursor = cnx.cursor()
@@ -28,7 +39,7 @@ def get_items(name):
     cnx.close()
     return items
 
-# print(get_items("OneForFourKay#5753")["stick"])
+# print(get_items("OneForFourKay#5753")["nail"])
 
 
 def get_items_names(name):
@@ -37,7 +48,7 @@ def get_items_names(name):
         array.append(i.lower())
     return array
 
-# print(get_items_names("OneForFourKay#5753"))
+print(get_items_names("OneForFourKay#5753"))
 
 def get_att(n):
     name_weapon = get_Equipped(n)[0]
@@ -146,54 +157,77 @@ def buy(i, n, number):
     t = itemDAO.get_type(i)
     # print(get_items(n).keys(), "      !", t)
     cnx = db.cnx()
-    if int(itemDAO.get_price(i))*number < int(get_coins(n)):
-        if t != "att" and t != "def":
-            print(i, "bought")
-            new_coin = int(get_coins(n)) - int(itemDAO.get_price(i)) * number
-            cursor = cnx.cursor()
-            query = f"UPDATE `kogrpg`.`stats` SET `coins` = '{new_coin}' WHERE (`name` = '{n}');"
-            cursor.execute(query)
-            cnx.commit()
-            cursor.close()
-            if i in get_items(n).keys():
-                numb = number + int(get_items(n)[i])
-                cursor = cnx.cursor()
-                query = f"UPDATE `kogrpg`.`inventory` SET `name` = '{n}', `item` = '{i}', `number` = '{numb}' WHERE (`item` = '{i.lower()}');"
-                cursor.execute(query)
-                cnx.commit()
-                cursor.close()
-                cnx.close()
-                return "Yes"
-            else:
-                numb = number
-                cursor = cnx.cursor()
-                query = f"INSERT INTO `kogrpg`.`inventory` (`name`, `item`, `type`, `number`) VALUES ('{n}', '{i}', '{t}', '{numb}');"
-                cursor.execute(query)
-                cnx.commit()
-                cursor.close()
-                cnx.close()
-                return "Yes"
-        elif i not in get_items(n).keys():
-            new_coin = int(get_coins(n)) - int(itemDAO.get_price(i))
-            cursor = cnx.cursor()
-            query = f"UPDATE `kogrpg`.`stats` SET `coins` = '{new_coin}' WHERE (`name` = '{n}');"
-            cursor.execute(query)
-            cnx.commit()
-            cursor.close()
+    if itemDAO.get_shop(i) != "special":
+        if int(itemDAO.get_price(i))*number < int(get_coins(n)):
+            if t != "att" and t != "def":
+                if t != "mat":
+                    print(i, "bought")
+                    new_coin = int(get_coins(n)) - int(itemDAO.get_price(i)) * number
+                    cursor = cnx.cursor()
+                    query = f"UPDATE `kogrpg`.`stats` SET `coins` = '{new_coin}' WHERE (`name` = '{n}');"
+                    cursor.execute(query)
+                    cnx.commit()
+                    cursor.close()
+                    if i in get_items(n):
+                        numb = number + int(get_items(n)[i])
+                        cursor = cnx.cursor()
+                        query = f"UPDATE `kogrpg`.`inventory` SET `name` = '{n}', `item` = '{i}', `number` = '{numb}' WHERE (`item` = '{i.lower()}');"
+                        cursor.execute(query)
+                        cnx.commit()
+                        cursor.close()
+                        cnx.close()
+                        return "Yes"
+                    else:
+                        numb = number
+                        cursor = cnx.cursor()
+                        query = f"INSERT INTO `kogrpg`.`inventory` (`name`, `item`, `type`, `number`) VALUES ('{n}', '{i}', '{t}', '{numb}');"
+                        cursor.execute(query)
+                        cnx.commit()
+                        cursor.close()
+                        cnx.close()
+                        return "Yes"
+                else:
+                    return "Mat"
 
-            cursor = cnx.cursor()
-            query = f"INSERT INTO `kogrpg`.`inventory` (`name`, `item`, `type`) VALUES ('{n}', '{i}', '{t}');"
-            cursor.execute(query)
-            cnx.commit()
-            cursor.close()
-            cnx.close()
-            return "Tools"
+            elif i not in get_items(n).keys():
+                new_coin = int(get_coins(n)) - int(itemDAO.get_price(i))
+                cursor = cnx.cursor()
+                query = f"UPDATE `kogrpg`.`stats` SET `coins` = '{new_coin}' WHERE (`name` = '{n}');"
+                cursor.execute(query)
+                cnx.commit()
+                cursor.close()
+
+                cursor = cnx.cursor()
+                query = f"INSERT INTO `kogrpg`.`inventory` (`name`, `item`, `type`) VALUES ('{n}', '{i}', '{t}');"
+                cursor.execute(query)
+                cnx.commit()
+                cursor.close()
+                cnx.close()
+                return "Tools"
+
+            elif int(get_items(n)[i]) == 0:
+                new_coin = int(get_coins(n)) - int(itemDAO.get_price(i))
+                cursor = cnx.cursor()
+                query = f"UPDATE `kogrpg`.`stats` SET `coins` = '{new_coin}' WHERE (`name` = '{n}');"
+                cursor.execute(query)
+                cnx.commit()
+                cursor.close()
+
+                cursor = cnx.cursor()
+                query = f"INSERT INTO `kogrpg`.`inventory` (`name`, `item`, `type`) VALUES ('{n}', '{i}', '{t}');"
+                cursor.execute(query)
+                cnx.commit()
+                cursor.close()
+                cnx.close()
+                return "Tools"
+
+            else:
+                return "Repeat"
 
         else:
-            return "Repeat"
-
+            return "Poor"
     else:
-        return "Poor"
+        return "Special"
 
 
 def sell(i, n, number):
@@ -231,12 +265,13 @@ def decrease_item(i, n, number):
         return True
     else:
         return False
+# print(get_items("OneForFourKay#5753")["lootbox"])
 
 
 def increase_itembyNumber(i,n, numb):
     cnx = db.cnx()
     numb = int(numb)
-    # print("numb = ", numb)
+    print("numb = ", numb)
     try:
         now = int(get_items(n)[i.lower()])
         t = itemDAO.get_type(i)
@@ -262,7 +297,7 @@ def increase_itembyNumber(i,n, numb):
                 numb -= now
                 if numb == 0:
                     numb = 1
-                x += f"+ {numb} {itemDAO.get_item_emoji(i)}\n"
+                x += f"+ {1} {itemDAO.get_item_emoji(i)} {i}\n"
             return x
         else:
             i = i.lower()
@@ -279,7 +314,7 @@ def increase_itembyNumber(i,n, numb):
                 numb -= now
                 if numb == 0:
                     numb = 1
-                x += f"+ {numb} {itemDAO.get_item_emoji(i)}\n"
+                x += f"+ {1} {itemDAO.get_item_emoji(i)} {i}\n"
             return x
     if i.lower() not in get_items(n).keys():
         # print(i, "not in >", get_items(n).keys())
@@ -294,7 +329,7 @@ def increase_itembyNumber(i,n, numb):
         if numb == 0:
             x += ""
         else:
-            x += f"+ {1} {itemDAO.get_item_emoji(i)}\n"
+            x += f"+ {1} {itemDAO.get_item_emoji(i)} {i}\n"
         return x
     else:
         x += ""
@@ -348,7 +383,7 @@ def get_Equipped(n):
         cnx = db.cnx()
         cursor = cnx.cursor()
         e_array = [0, 0]
-        query = f"SELECT `item` FROM `kogrpg`.`inventory` WHERE (`type` = 'att' and `name` = '{n}' and `equip` = 'TRUE');"
+        query = f"SELECT `item` FROM `kogrpg`.`inventory` WHERE (`type` = 'att' and `name` = '{n}' and `equip` = 'TRUE' and `number` = '1');"
         cursor.execute(query)
         for i in cursor:
             # print(i)
@@ -357,7 +392,7 @@ def get_Equipped(n):
 
         cnx = db.cnx()
         cursor = cnx.cursor()
-        query = f"SELECT `item` FROM `kogrpg`.`inventory` WHERE (`type` = 'def' and `name` = '{n}' and `equip` = 'TRUE');"
+        query = f"SELECT `item` FROM `kogrpg`.`inventory` WHERE (`type` = 'def' and `name` = '{n}' and `equip` = 'TRUE' and `number` = '1');"
         cursor.execute(query)
 
         for i in cursor:

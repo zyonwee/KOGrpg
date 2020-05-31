@@ -7,6 +7,6 @@ def Bet(n, choice, bet):
     if results >= 60:
         u.set_coins(n, bet)
         return f"You placed your bets on {choice} and Won :moneybag: {bet}!"
-    if results < 60:
+    if results < 40:
         u.set_coins(n, -bet)
         return f"You placed your bets on {choice} and Lost :moneybag: {bet}!"

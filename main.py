@@ -12,7 +12,7 @@ import Casino.coinflip as cf
 import Casino.Arithemetics as ari
 cnx = db.cnx()
 client = discord.Client()
-
+fixed_queries = ["interface", "action", "pet", "pets", "casino", "shop"]
 stages = ["Baby", "In-Training", "Rookie", "Champion", "Ultimate", "Mega", "Ultra"]
 
 @client.event
@@ -21,7 +21,6 @@ async def on_message(message):
     n = str(message.author).strip()
     if message.author == client.user:
         return
-
     # new gamer
     if message.content.startswith("kog"):
         new = s.check_player_new(n)
@@ -34,21 +33,21 @@ async def on_message(message):
                     cnx.commit()
                     cursor.close()
                     cnx.close()
-                    await message.channel.send("Welcome New Player :baby: !! :dove: **" + str(message.author)[:-5] + "**" +
-                                               "\n Do `kog p` or `kog profile` to see your profile! :D")
+                    await message.channel.send("Welcome New Player :baby: !! :dove: **" + str(message.author)[:-5].title() + "**" +
+                                               "\n Do `kog p` or `kog profile` to see your profile! :D\n `kog help` for Basic Commnands")
                 else:
-                    await message.channel.send("Shalom !! :dove: **" + str(message.author)[:-5] + "**")
+                    await message.channel.send("Shalom !! :dove: **" + str(message.author)[:-5].title() + "**\n`kog help` for Basic Commnands")
             else:
-                await message.channel.send("Shalom !! Type `kog` to create an account :dove: ")
+                await message.channel.send("Shalom !! Type `kog` to create an account :dove:")
 
         else:
             if message.content == "kog":
-                    await message.channel.send("Shalom !! :dove: **" + str(message.author)[:-5] + "**")
+                    await message.channel.send("Shalom !! :dove: **" + str(message.author)[:-5].title() + "**\n`kog help` for Basic Commnands")
 
 
             # profile
             if message.content == "kog p" or message.content == "kog profile":
-                embed = discord.Embed(title=str(message.author)[:-5] + "'s Profile",
+                embed = discord.Embed(title=str(message.author)[:-5].title() + "'s Profile",
                                       description="Title : Noobie \nTrainer's Level : " + u.get_level(n) + " (" + u.get_progress(n) + "%)"
                                                   + "\nRealm : " + u.get_realm(n)
                                                   + "\nXp : " + u.get_curr_xp(n) + "/" + u.get_max_xp(n)
@@ -81,6 +80,7 @@ async def on_message(message):
                     embed.set_thumbnail(url=p.getMain(n))
                 embed.add_field(name="Bank", value= f":moneybag: **" + u.get_coins(n) + "** :comet: **" + u.get_gem(n) + "**", inline=False)
                 embed.color = discord.Color(0xfdfd96)
+                embed.set_footer(text = "Try doing <kog inv> to see all items you have!")
                 await message.channel.send(content=None, embed=embed)
 
 
@@ -93,7 +93,7 @@ async def on_message(message):
                     emoji = itemDAO.get_item_emoji(i)
                     desc = itemDAO.get_desc(i)
                     price = itemDAO.get_price(i)
-                    embed.add_field(name=str(i), value=f"{emoji}{desc}\n\n:moneybag: {price}\n")
+                    embed.add_field(name=str(i).title(), value=f"{emoji}{desc}\n\n:moneybag: {price}\n")
                 embed.set_thumbnail(url=p.getMain(n))
                 embed.color = discord.Color(0xd4af37)
                 await message.channel.send(content=None, embed=embed)
@@ -105,7 +105,7 @@ async def on_message(message):
                     emoji = itemDAO.get_item_emoji(i)
                     desc = itemDAO.get_desc(i)
                     price = itemDAO.get_price(i)
-                    embed.add_field(name=str(i), value=f"{emoji}{desc}\n\n:moneybag: {price}\n")
+                    embed.add_field(name=str(i).title(), value=f"{emoji}{desc}\n\n:moneybag: {price}\n")
                 embed.set_thumbnail(url=p.getMain(n))
                 embed.color = discord.Color(0xd4af37)
                 await message.channel.send(content=None, embed=embed)
@@ -116,7 +116,7 @@ async def on_message(message):
                     emoji = itemDAO.get_item_emoji(i)
                     desc = itemDAO.get_desc(i)
                     price = itemDAO.get_price(i)
-                    embed.add_field(name=str(i), value=f"{emoji}{desc}\n\n:moneybag: {price}\n")
+                    embed.add_field(name=str(i).title(), value=f"{emoji}{desc}\n\n:moneybag: {price}\n")
                 embed.set_thumbnail(url=p.getMain(n))
                 embed.color = discord.Color(0xd4af37)
                 await message.channel.send(content=None, embed=embed)
@@ -130,7 +130,7 @@ async def on_message(message):
                     desc = itemDAO.get_desc(i)
                     price = itemDAO.get_price(i)
                     embed.set_thumbnail(url=p.getMain(n))
-                    embed.add_field(name=str(i), value=f"{emoji} {desc}\n:moneybag: {price}", inline=False)
+                    embed.add_field(name=str(i).title(), value=f"{emoji} {desc}\n:moneybag: {price}", inline=False)
 
                 embed.color = discord.Color(0xEDDDDD)
                 embed.set_thumbnail(url=p.getMain(n))
@@ -140,21 +140,61 @@ async def on_message(message):
             # help
             if message.content == "kog help" or message.content == "kog ?":
                 embed = discord.Embed(title="Welcome to KoGrpg Help", description="Listed are some basic Commands \n`kog help <specifics>`")
-                embed.add_field(name="Interfacing Commands", value="`kog` `kog profile` `kog shop` `kog inv` `kog recipes`"
-                                                                   "\n\n`kog shop [egg|recipes|lb|pet]`", inline=False)
-                embed.add_field(name="Action Commands", value="`kog hunt` `kog heal` `kog craft`", inline=False)
-                embed.add_field(name="Shop Commands", value="`kog buy <number> <name>` `kog sell <number> <name>`", inline=False)
-                embed.add_field(name="Pets Commands", value="`kog pet` `kog pets` `kog main <name>` `kog evolve <name>` \n\n`kog help [Attribute].[Stage]`", inline=False)
-                embed.add_field(name="Casino Commands", value="`kog cf [h/t] [money]`", inline=False)
+                embed.add_field(name="Interfacing Commands", value="`kog help interface`", inline=False)
+                embed.add_field(name="Action Commands", value="`kog help action`", inline=False)
+                embed.add_field(name="Shop Commands", value="`kog help shop`", inline=False)
+                embed.add_field(name="Pets Commands", value="`kog help pets`", inline=False)
+                embed.add_field(name="Casino Commands", value="`kog help casino`", inline=False)
+                embed.color = discord.Color(0xEDDDDD)
+                embed.set_thumbnail(url=p.getMain(n))
+                await message.channel.send(content=None, embed=embed)
+
+            if message.content == "kog help interface":
+                embed = discord.Embed(title="Welcome to KoGrpg Help Interface", description="Listed are some basic Commands \n`kog help <specifics>`")
+                h = q.list_help("interface")
+                embed.add_field(name="Interface Commands", value=h, inline=False)
+                embed.color = discord.Color(0xEDDDDD)
+                embed.set_thumbnail(url=p.getMain(n))
+                await message.channel.send(content=None, embed=embed)
+
+            if message.content == "kog help action" or message.content == "kog help actions":
+                embed = discord.Embed(title="Welcome to KoGrpg Help Action", description="Listed are some basic Commands \n`kog help <specifics>`")
+                h = q.list_help("action")
+                embed.add_field(name="Action Commands", value=h, inline=False)
+                embed.color = discord.Color(0xEDDDDD)
+                embed.set_thumbnail(url=p.getMain(n))
+                await message.channel.send(content=None, embed=embed)
+
+            if message.content == "kog help shop":
+                embed = discord.Embed(title="Welcome to KoGrpg Help Shop", description="Listed are some basic Commands \n`kog help <specifics>`")
+                h = q.list_help("shop")
+                embed.add_field(name="Shop Commands", value=h, inline=False)
+                embed.color = discord.Color(0xEDDDDD)
+                embed.set_thumbnail(url=p.getMain(n))
+                await message.channel.send(content=None, embed=embed)
+
+            if message.content == "kog help pets" or message.content == "kog help pet":
+                embed = discord.Embed(title="Welcome to KoGrpg Help Pets", description="Listed are some basic Commands \n`kog help <specifics>`")
+                h = q.list_help("pet")
+                embed.add_field(name="Pets Commands", value=h, inline=False)
+                embed.color = discord.Color(0xEDDDDD)
+                embed.set_thumbnail(url=p.getMain(n))
+                await message.channel.send(content=None, embed=embed)
+
+            if message.content == "kog help casino":
+                embed = discord.Embed(title="Welcome to KoGrpg Help", description="Listed are some basic Commands \n`kog help <specifics>`")
+                h = q.list_help("casino")
+                embed.add_field(name="Casino Commands", value=h, inline=False)
                 embed.color = discord.Color(0xEDDDDD)
                 embed.set_thumbnail(url=p.getMain(n))
                 await message.channel.send(content=None, embed=embed)
 
             if message.content.startswith("kog help "):
                 h = message.content[9:].lower()
-                print(h)
-                h = q.list_help(h)
-                await message.channel.send(content=h)
+                if h not in fixed_queries:
+                    print(h)
+                    h = q.list_help(h)
+                    await message.channel.send(content=h)
 
 
             # hunt
@@ -215,13 +255,16 @@ async def on_message(message):
 
             # heal
             if message.content.startswith("kog heal"):
-                item_desired = "life potion"
-                if itemDAO.get_type(item_desired) == "hp" and int(u.get_items(n)[item_desired]) != 0 :
-                    s.heal(n)
-                    u.decrease_item(item_desired, n, 1)
-                    await message.channel.send(content="Your health is restored to full, 1 <:lifepotion:715245405918593207> consumed.")
-                else:
-                    await message.channel.send(content="You go buy a potion la. You got none.")
+                try:
+                    item_desired = "life potion"
+                    if itemDAO.get_type(item_desired) == "hp" and int(u.get_items(n)[item_desired]) != 0 :
+                        s.heal(n)
+                        u.decrease_item(item_desired, n, 1)
+                        await message.channel.send(content="Your health is restored to full, 1 <:lifepotion:715245405918593207> consumed.")
+                    else:
+                        await message.channel.send(content="You go buy a potion la. You got none.")
+                except:
+                    await message.channel.send(content="Sure bo you got potion? Go `kog shop`")
 
 
             # buy
@@ -254,6 +297,10 @@ async def on_message(message):
                         await message.channel.send(content=f"You Already have the equipment **{item_desired}** {itemDAO.get_item_emoji(item_desired)}")
                     if string == "Poor":
                         await message.channel.send(content="You too poor la. **LMAO**")
+                    if string == "Mat":
+                        await message.channel.send(content="You cant buy a monster's parts dummi !")
+                    if string == "Special":
+                        await message.channel.send(content="Dummy, you thought there was a bug didnt you? Welps you cant buy special items ! !")
                 except:
                     await message.channel.send(content="Check your spelling MeEstER!")
 
@@ -287,7 +334,7 @@ async def on_message(message):
 
             # Inventory
             if message.content.startswith("kog inv" or "kog inventory"):
-                embed = discord.Embed(title=f"{n}'s Inventory'", description="`kog sell <number> <name>` to get 80% coins back"
+                embed = discord.Embed(title=f"{n[:-5].title()}'s Inventory", description="`kog sell <number> <name>` to get 80% coins back"
                                                                              "\n`kog use <egg name>` to hatch your eggs!"
                                                                              "\n`kog equip <name>` to equip weaponry"
                                                                              "\n`kog help <name>` to see item descriptions")
@@ -297,7 +344,7 @@ async def on_message(message):
                     if int(u.get_items(n)[i]) > 0:
                         emoji = itemDAO.get_item_emoji(i)
                         number = int(u.get_items(n)[i])
-                        embed.add_field(name=str(i).capitalize(), value=f"{emoji} x{number}")
+                        embed.add_field(name=str(i).title(), value=f"{emoji} x{number}")
                         count += 1
                 if count == 0:
                         embed.add_field(name="Items", value=f"Dude go buy yourself something man. `kog shop`")
@@ -308,7 +355,7 @@ async def on_message(message):
 
             # pet all
             if message.content == "kog pets" or message.content == "kog pet all":
-                embed = discord.Embed(title=f"{n}'s Pets'", description="Do `kog main <name>` to set a Main Pet !\nDo `kog pet <name>` for more info")
+                embed = discord.Embed(title=f"{n[:-5].title()}'s Pets'", description="Do `kog main <name>` to set a Main Pet !\nDo `kog pet <name>` for more info")
                 pet_count = True
                 mypets = mp.get_myPets(n)
 
@@ -325,7 +372,7 @@ async def on_message(message):
                         att = mp.get_att_inc(i, number, n)
                         defense = mp.get_def_inc(i, number, n)
                         # embed.set_image(url=emoji)
-                        embed.add_field(name=name, value=f"**Level:** {number} ({progress}%)| {stage} | "
+                        embed.add_field(name=name.title(), value=f"**Level:** {number} ({progress}%)| {stage} | "
                                                          f"**Attr:** {attr} | **Hp:** {hp}/{max_hp} | *{main}*\n"
                                                          f":crossed_swords: {att} :shield: {defense}", inline=False)
                         pet_count = False
@@ -355,7 +402,7 @@ async def on_message(message):
                         stage = mypets[i]["stage"]
                         progress = mp.get_progress_xp(i, n)
                         emoji = mypets[i]["Image_link"]
-                        embed = discord.Embed(title=f"{i}", description=f"Stats")
+                        embed = discord.Embed(title=f"{i.title()}", description=f"Stats")
                         embed.set_image(url=emoji)
                         embed.add_field(name=f"{stage}", value=f"**Level:** {number} ({progress}%)\n**XP:** {xp}/{max_xp}\n"
                                         f"**Attr:** {attr}\n**Hp:** {hp}/{max_hp}\n:crossed_swords: {att} :shield: {defense}", inline=False)
@@ -379,19 +426,19 @@ async def on_message(message):
                     defense = mp.get_def_inc(i, number, n)
                     progress = mp.get_progress_xp(i, n)
                     emoji = mypets[i]["Image_link"]
-                    embed = discord.Embed(title=f"{i}", description=f"Stats of {main}")
+                    embed = discord.Embed(title=f"{i.title()}", description=f"Stats of {main}")
                     embed.set_image(url=emoji)
                     embed.add_field(name=f"{stage}", value=f"**Level:** {number} ({progress}%)\n**XP:** {xp}/{max_xp}\n"
                                      f"**Attr:** {attr}\n**Hp:** {hp}/{max_hp}\n:crossed_swords: {att} :shield: {defense}", inline=False)
                     embed.color = discord.Color(0xFF0000)
-                    embed.set_footer(text = "do <kog pets> to see all your pets. Remember to main them with `kog main <name>`")
+                    embed.set_footer(text="do <kog pets> to see all your pets. Remember to main them with `kog main <name>`")
                     await message.channel.send(content=None, embed=embed)
                 except:
-                        await message.channel.send(content="You have no pet. Go buy one in `kog shop egg`")
+                    await message.channel.send(content="You have no pet. Go buy one in `kog shop egg` Dont for get to main them! `kog main <pet name>`")
 
             # Use
             if message.content.startswith("kog use "):
-                # try:
+                try:
                     item_desired = message.content[8:].lower()
                     # print(item_desired, "    l   f")
                     # print(itemDAO.get_type(item_desired))
@@ -412,11 +459,14 @@ async def on_message(message):
                     except:
                         number = 1
                     if itemDAO.get_type(item_desired) == "hp":
-                        if int(u.get_items(n)[item_desired]) != 0 :
-                            s.heal(n)
-                            u.decrease_item(item_desired, n, 1)
-                            await message.channel.send(content="Your health is restored to full, 1 <:lifepotion:715245405918593207> consumed.")
-                        else:
+                        try:
+                            if int(u.get_items(n)[item_desired]) != 0 :
+                                s.heal(n)
+                                u.decrease_item(item_desired, n, 1)
+                                await message.channel.send(content="Your health is restored to full, 1 <:lifepotion:715245405918593207> consumed.")
+                            else:
+                                await message.channel.send(content="You go buy a potion la. You got none.")
+                        except:
                             await message.channel.send(content="You go buy a potion la. You got none.")
 
                     if itemDAO.get_type(item_desired) == "mat":
@@ -445,6 +495,9 @@ async def on_message(message):
                         else:
                             await message.channel.send(content="You dont give birth to eggs, buy them in a shop ! `kog shop egg`")
 
+                    if itemDAO.get_type(item_desired) == "att" or itemDAO.get_type(item_desired) == "def":
+                        await message.channel.send(content="This is an equipment! Do `kog equip <name> instead`")
+
                     if itemDAO.get_type(item_desired) == "petxp":
                         if int(u.get_items(n)[item_desired]) != 0:
                             mainpet = p.getMain_Name(n)
@@ -469,6 +522,8 @@ async def on_message(message):
                                     embed.color = discord.Color(0xaec6cf)
                                     embed.set_thumbnail(url=p.getMain(n))
                                     await message.channel.send(content=None, embed=embed)
+                            else:
+                                await message.channel.send(content="You need to set a main pet first! `kog main <name>`")
 
                     if itemDAO.get_type(item_desired).lower() == "lb":
                         if item_desired == "lootbox":
@@ -485,8 +540,8 @@ async def on_message(message):
                             embed.color = discord.Color(0xaec6cf)
                             embed.set_thumbnail(url=p.getMain(n))
                             await message.channel.send(content=None, embed=embed)
-                # except:
-                #     await message.channel.send(content="Check you spelling kindergartner!")
+                except:
+                    await message.channel.send(content="Check you spelling kindergartner! or maybe u dont have the item...")
 
 
 
@@ -503,17 +558,70 @@ async def on_message(message):
             # Equip Items
             if message.content.startswith("kog equip "):
                 item_desired = message.content[10:].lower()
-                x = u.equip(item_desired, n)
-                emoji = itemDAO.get_item_emoji(item_desired)
-                if x:
-                    await message.channel.send(content="You have equipped **" + item_desired + " " + emoji + "**!")
-                else:
-                    await message.channel.send(content="You do not have this item. Maybe u never spell right.")
+                try:
+                    if itemDAO.get_type(item_desired) == "att" or itemDAO.get_type(item_desired) == "def":
+                        x = u.equip(item_desired, n)
+                        emoji = itemDAO.get_item_emoji(item_desired)
+                        if x:
+                            await message.channel.send(content="You have equipped **" + item_desired + " " + emoji + "**!")
+                        else:
+                            await message.channel.send(content="You do not have this item. Maybe u never spell right.")
+                    else:
+                        await message.channel.send(content="This item in unequipable!")
+                except:
+                    await message.channel.send(content="YoU ReaLLy CaNt sPeLL yOuR EQuiPmENts o.0")
 
 
             # Evolve Pet
             if message.content.startswith("kog evolve "):
                 evo_desired = message.content[11:].lower()
+                can_evo = p.can_evolve(evo_desired, n)
+                now_stage = mp.get_stage_l(evo_desired, n)
+                next_stage_index = stages.index(now_stage) + 1
+                attr = ap.get_attr(evo_desired)
+                print(can_evo)
+                if can_evo == "yes":
+                    mat = p.check_evo_mat(now_stage, n)
+                    if mat[1]:
+                        # u.decrease_item(mat[0].lower(), n, 1)
+                        possible_evo = p.possible_evo(attr, stages[next_stage_index])
+                        name_attr = p.get_name_attr(possible_evo)
+                        await message.channel.send(content=name_attr)
+
+                        def check(m):
+                            chk = False
+                            name = ""
+                            for i in m.content:
+                                name += i
+                            name = name
+                            for i in possible_evo:
+                                # print(possible_evo)
+                                if name == i:
+                                    chk = True
+                            return chk
+                        try:
+                            evo_tobe = await client.wait_for('message', timeout=30.0, check=check)
+
+                        except asyncio.TimeoutError:
+                            await message.channel.send('Evolution Failed !')
+
+                        p.UpdateEvo(evo_desired, evo_tobe.content, n)
+
+                        embed = discord.Embed(title="Hatched!", description=f"You hatched a {evo_tobe.content.capitalize()}")
+                        embed.set_thumbnail(url=p.getMain(n))
+                        embed.color = discord.Color(0xFFB6C1)
+                        embed.set_footer(text = "do <kog pet> to see it !")
+                        await message.channel.send(content=None, embed=embed)
+
+                    else:
+                        await message.channel.send(content=mat[0])
+                elif can_evo == "Your pet is not high level enough!!":
+                    await message.channel.send(content=can_evo)
+                else:
+                    await message.channel.send(content=can_evo)
+
+            if message.content.startswith("kog evo "):
+                evo_desired = message.content[8:].lower()
                 can_evo = p.can_evolve(evo_desired, n)
                 now_stage = mp.get_stage_l(evo_desired, n)
                 next_stage_index = stages.index(now_stage) + 1
@@ -531,10 +639,10 @@ async def on_message(message):
                             name = ""
                             for i in m.content:
                                 name += i
-                            name = name.capitalize()
+                            name = name
                             for i in possible_evo:
                                 # print(possible_evo)
-                                if name.capitalize() == i:
+                                if name == i:
                                     chk = True
                             return chk
                         try:
@@ -543,8 +651,7 @@ async def on_message(message):
                         except asyncio.TimeoutError:
                             await message.channel.send('Evolution Failed !')
 
-
-                        p.UpdateEvo(evo_desired, evo_tobe.content.capitalize(), n)
+                        p.UpdateEvo(evo_desired, evo_tobe.content, n)
 
                         embed = discord.Embed(title="Hatched!", description=f"You hatched a {evo_tobe.content.capitalize()}")
                         embed.set_thumbnail(url=p.getMain(n))
@@ -562,28 +669,29 @@ async def on_message(message):
 
             # Equip Items
             if message.content.startswith("kog cf "):
-                embed = discord.Embed(title="Casino :dice:", description="Coin Flip")
-
+                embed = discord.Embed(title="Casino :diamonds:", description="Coin Flip")
                 choice = message.content[7:8]
                 after = message.content[8:]
                 bet = ""
                 for i in after:
                     if i.isnumeric():
                         bet += i
-                bet = int(bet)
-                if choice == "h":
-                    choice = "heads"
-                    inner_text = cf.Bet(n, choice, bet)
-                elif choice == "t":
-                    choice = "tails"
-                    inner_text = cf.Bet(n, choice, bet)
+                bet = abs(int(bet))
+                if bet < int(u.get_coins(n)):
+                    if choice == "h":
+                        choice = "heads"
+                        inner_text = cf.Bet(n, choice, bet)
+                    elif choice == "t":
+                        choice = "tails"
+                        inner_text = cf.Bet(n, choice, bet)
+                    else:
+                        inner_text = "Please input properly. `kog cf [h/t] [money]`"
+                    embed.add_field(name="Gambling ? :smiling_imp:", value=inner_text)
+                    embed.set_thumbnail(url=p.getMain(n))
+                    embed.color = discord.Color(0xFFB6C1)
+                    await message.channel.send(content=None, embed=embed)
                 else:
-                    inner_text = "Please input properly. `kog cf [h/t] [money]`"
-                embed.add_field(name="Gambling ? :smiling_imp:", value=inner_text)
-                embed.set_thumbnail(url=p.getMain(n))
-                embed.color = discord.Color(0xFFB6C1)
-                await message.channel.send(content=None, embed=embed)
-
+                    await message.channel.send(content="Not enough money")
             # Recipes
             if message.content == "kog recipe" or message.content == "kog recipes":
                 embed = discord.Embed(title="Recipes", description="Welcome to Recipes! \n`kog craft < name>`")
@@ -603,16 +711,19 @@ async def on_message(message):
 
             # craft
             if message.content.startswith("kog craft "):
-                item_desired = message.content[10:].title()
-                ck = r.check_ifCraft(item_desired, n)
-                if ck == "Yes":
-                    ck = r.craft(item_desired, n)
-                embed = discord.Embed(title="Crafts", description="Welcome to Recipes! \nDo `kog recipe` to see Recipes")
-                embed.add_field(name=f"{item_desired}", value=f"{ck}", inline=False)
-                embed.color = discord.Color(0xEDDDDD)
-                embed.set_thumbnail(url=p.getMain(n))
-                await message.channel.send(content=None, embed=embed)
+                try:
+                    item_desired = message.content[10:].title()
+                    ck = r.check_ifCraft(item_desired, n)
+                    if ck == "Yes":
+                        ck = r.craft(item_desired, n)
+                    embed = discord.Embed(title="Crafts", description="Welcome to Crafts! \nDo `kog recipe` to see Recipes")
+                    embed.add_field(name=f"{item_desired}", value=f"{ck}", inline=False)
+                    embed.color = discord.Color(0xEDDDDD)
+                    embed.set_thumbnail(url=p.getMain(n))
+                    await message.channel.send(content=None, embed=embed)
+                except:
 
+                    await message.channel.send(content="Check out `kog recipes`")
 
 
 # embed.set_thumbnail(url="http://digidb.io/images/dot/dot629.png")
