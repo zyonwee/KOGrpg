@@ -83,7 +83,7 @@ def chosen(level):
 
 
 def get_drops(name):
-    if random.randint(1, int(get_chance(name))) == 1:
+    if random.randint(0, int(get_chance(name))) >= 1:
         quantity = random.randint(1, int(get_quantity(name)))
         drops = [str(quantity), str(get_itemdrop(name))]
         return drops
@@ -120,7 +120,7 @@ def fight(chosen, att, defense, hp, max_hp, level, n):
             if (m_att*2 - int(defense)) > 0:
                 hp -= abs((m_att - int(defense)))
                 counter_dealt += abs((m_att - int(defense)))
-        print(m_hp, hp)
+        # print(m_hp, hp)
         count += 1
     if hp > 0:
         string = f"**{n[:-5]}**  **-{str(counter_dealt)}** hp. You attacked with **{str(m_hp_start)}** dmg. \n:heart: " \
@@ -129,8 +129,9 @@ def fight(chosen, att, defense, hp, max_hp, level, n):
         return [string, coins, xp, True, hp, chosen]
 
     if m_hp > 0:
-        string = f"**{n[:-5]}**  **- {str(hp_start)}** hp. You lost to **{chosen} {emoji}**. Exp Reset :( " \
-                 f"\nDid you equip your items? You need items you know XD "
+        string = f"**{n[:-5]}**  **- {str(hp_start)}** hp. You died to **{chosen} {emoji}**. Level -1, XP set to 0 and Health Full :ghost:" \
+                 f"\nDid you equip your items? You need items you know XD "\
+                 f"\n*Tip : Sell monster drops for more money ;)*"
         return [string, 0, 0, False, hp, chosen]
 
 

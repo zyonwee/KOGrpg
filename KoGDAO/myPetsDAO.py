@@ -37,13 +37,12 @@ def get_stage(p, n):
 def get_progress_xp(p, n):
     pet = get_myPets(n)
     level = pet[p]["level"]
-    progress = round(int(get_curr_xp(p,n))/int(get_max_xp(p, n, level))*100, 2)
+    progress = round(int(get_curr_xp(p,n))/int(get_max_xp(level))*100, 2)
     print(progress)
     return str(progress)
 
 
-def get_max_xp(p, n, L):
-    pet = get_myPets(n)
+def get_max_xp(L):
     realm = round(L // 10)
     if realm == 0:
         realm = 1
@@ -69,12 +68,9 @@ def max_att(p, l):
     return str(maxhp)
 
 
-
-
 def get_att_inc(petname, l, n):  # Actual
     pet = get_myPets(n)
     base_att = round(int(ap.get_att(petname))/50) * l + pet[petname]["att"]
-
     return str(base_att)
 
 
@@ -82,3 +78,23 @@ def get_def_inc(petname, l, n):  # Actual
     pet = get_myPets(n)
     base_def = round(int(ap.get_def(petname))/50) * l + pet[petname]["def"]
     return str(base_def)
+
+
+def set_health(n, pet_set, attk_Recieve):
+    new_hp = int(get_myPets(n)[pet_set]["hp"]) - int(attk_Recieve)
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    query = f"UPDATE `kogrpg`.`mypets` SET `hp` = '{new_hp}' WHERE (`pets` = '{pet_set}' and name = '{n}');"
+    cursor.execute(query)
+    cnx.commit()
+    cursor.close()
+
+
+def full_health(n, lvl, petname):
+    new_hp = max_hp(petname, lvl)
+    cnx = db.cnx()
+    cursor = cnx.cursor()
+    query = f"UPDATE `kogrpg`.`mypets` SET `hp` = '{new_hp}' WHERE (`pets` = '{petname}' and name = '{n}');"
+    cursor.execute(query)
+    cnx.commit()
+    cursor.close()

@@ -65,11 +65,13 @@ def get_allattr_stage(a, s):
 
 # print(get_allattr_stage("dark", "Champion"))
 
-def get_all_Evo(attr, s):
+
+def get_all_Evo(attr, s, n):
     names = []
     cnx = db.cnx()
     cursor = cnx.cursor()
-    query = (f"SELECT * FROM pets WHERE (Stage = '{s}' AND Attribute = '{attr}')")
+    query = (f"Select * from pets where (pets not in (SELECT p.pets FROM pets p INNER JOIN mypets mp ON p.pets = mp.pets "
+             f"WHERE mp.name = '{n}') AND attribute = '{attr}' and stage = '{s}');")
 
     cursor.execute(query)
     for i in cursor:

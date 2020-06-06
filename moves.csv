@@ -1,0 +1,166 @@
+Move,Attribute, stage,tier
+Flick,Neutral,0,1
+Focused Flick,Neutral,0,2
+Unbearable Flick,Neutral,0,3
+Slap,Neutral,1,1
+Seed Spit,Plant,1,1
+Shadow Sand,Dark,1,1
+Light Sand,Light,1,1
+Water Vapore,Water,1,1
+Heat Touch,Fire,1,1
+Pebble Place,Earth,1,1
+Spark,Electric,1,1
+Fart,Wind,1,1
+Focused Slap,Neutral,1,2
+Focused Seed Spit,Plant,1,2
+Focused Shadow Sand,Dark,1,2
+Focus Light Sand,Light,1,2
+Focus Water Vapore,Water,1,2
+Forcus Heat Touch,Fire,1,2
+Focus Pebble Place,Earth,1,2
+Focus Spark,Electric,1,2
+Focus Fart,Wind,1,2
+Unbearable Slap,Neutral,1,3
+Unbearable Seed Spit,Plant,1,3
+Unbearable Shadow Sand,Dark,1,3
+Unbearable Light Sand,Light,1,3
+Unbearable Water Vapore,Water,1,3
+Unbearable Heat Touch,Fire,1,3
+Unbearable Pebble Place,Earth,1,3
+Unbearable Spark,Electric,1,3
+Unbearable Fart,Wind,1,3
+Step,Neutral,2,1
+Stick Whack,Plant,2,1
+Dark Thoughts,Dark,2,1
+Light Thoughts,Light,2,1
+Bubble Pop,Water,2,1
+Heat Wave,Fire,2,1
+Vibrating Ground,Earth,2,1
+Tazer,Electric,2,1
+Smelly Fart,Wind,2,1
+Focused Step,Neutral,2,2
+Focused Stick Whack,Plant,2,2
+Focused Dark Thoughts,Dark,2,2
+Focused Light Thoughts,Light,2,2
+Focused Bubble Pop,Water,2,2
+Focused Heat Wave,Fire,2,2
+Focused Vibrating Ground,Earth,2,2
+Focused Tazer,Electric,2,2
+Focused Smelly Fart,Wind,2,2
+Unbearable Step,Neutral,2,3
+Unbearable Stick Whack,Plant,2,3
+Unbearable Dark Thoughts,Dark,2,3
+Unbearable Light Thoughts,Light,2,3
+Unbearable Bubble Pop,Water,2,3
+Unbearable Heat Wave,Fire,2,3
+Unbearable Vibrating Ground,Earth,2,3
+Unbearable Tazer,Electric,2,3
+Unbearable Smelly Fart,Wind,2,3
+Punch,Neutral,3,1
+Trunk Punch,Plant,3,1
+Dark Punch,Dark,3,1
+Light Punch,Light,3,1
+Water Punch,Water,3,1
+Fire Punch,Fire,3,1
+Earth Punch,Earth,3,1
+Electric Punch,Electric,3,1
+Wind Punch,Wind,3,1
+Focused Punch,Neutral,3,2
+Focused Trunk Punch,Plant,3,2
+Focused Dark Punch,Dark,3,2
+Focused Light Punch,Light,3,2
+Focused Water Punch,Water,3,2
+Focused Fire Punch,Fire,3,2
+Focused Earth Punch,Earth,3,2
+Focused Electric Punch,Electric,3,2
+Focused Fart Punch,Wind,3,2
+Unbearable Punch,Neutral,3,3
+Unbearable Trunk Punch,Plant,3,3
+Unbearable Dark Punch,Dark,3,3
+Unbearable Light Punch,Light,3,3
+Unbearable Water Punch,Water,3,3
+Unbearable Fire Punch,Fire,3,3
+Unbearable Earth Punch,Earth,3,3
+Unbearable Electric Punch,Electric,3,3
+Unbearable Fart Punch,Wind,3,3
+Kinetic Ball,Neutral,4,1
+Flower Ball,Plant,4,1
+Dark Ball,Dark,4,1
+Light Ball,Light,4,1
+Water Ball,Water,4,1
+Fire Ball,Fire,4,1
+Earth Ball,Earth,4,1
+Electric Ball,Electric,4,1
+Fart Ball,Wind,4,1
+Concentrated Kinetic Ball,Neutral,4,2
+Concentrated Flower Ball,Plant,4,2
+Concentrated Dark Ball,Dark,4,2
+Concentrated Light Ball,Light,4,2
+Concentrated Water Ball,Water,4,2
+Concentrated Fire Ball,Fire,4,2
+Concentrated Earth Ball,Earth,4,2
+Concentrated Electric Ball,Electric,4,2
+Concentrated Fart Ball,Wind,4,2
+Intense Kinetic Ball,Neutral,4,3
+Intense Flower Ball,Plant,4,3
+Intense Dark Ball,Dark,4,3
+Intense Light Ball,Light,4,3
+Intense Water Ball,Water,4,3
+Intense Fire Ball,Fire,4,3
+Intense Earth Ball,Earth,4,3
+Intense Electric Ball,Electric,4,3
+Intense Fart Ball,Wind,4,3
+Sword Stab,Neutral,5,1
+Plant Toxic,Plant,5,1
+Shadow Burst,Dark,5,1
+Light Burst,Light,5,1
+Flood,Water,5,1
+Forest Fire,Fire,5,1
+Earthquake,Earth,5,1
+Circuit Breaker,Electric,5,1
+Fart Pandemic,Wind,5,1
+Serious Sword Stab,Neutral,5,2
+Serious Plant Toxic,Plant,5,2
+Serious Shadow Burst,Dark,5,2
+Serious Light Burst,Light,5,2
+Serious Flood,Water,5,2
+Serious Forest Fire,Fire,5,2
+Serious Earthquake,Earth,5,2
+Serious Circuit Breaker,Electric,5,2
+Serious Fart Pandemic,Wind,5,2
+Choke,Neutral,5,3
+Parasite Growth,Plant,5,3
+Shadow's Betrayal,Dark,5,3
+Light's Loyalth,Light,5,3
+Water Stomp,Water,5,3
+Fire Blaze,Fire,5,3
+Earth Split,Earth,5,3
+True Voltage,Electric,5,3
+Ancient Fart,Wind,5,3
+Terrifying Choke,Neutral,6,1
+Terrifying Parasite Growth,Plant,6,1
+Terrifying Shadow's Betrayal,Dark,6,1
+Terrifying Light's Loyalth,Light,6,1
+Terrifying Water Stomp,Water,6,1
+Terrifying Fire Blaze,Fire,6,1
+Terrifying Earth Split,Earth,6,1
+Terrifying True Voltage,Electric,6,1
+Terrifying Ancient Fart,Wind,6,1
+Unbelievable Choke,Neutral,6,2
+Unbelievable Parasite Growth,Plant,6,2
+Unbelievable Shadow's Betrayal,Dark,6,2
+Unbelievable Light's Loyalth,Light,6,2
+Unbelievable Water Stomp,Water,6,2
+Unbelievable Fire Blaze,Fire,6,2
+Unbelievable Earth Split,Earth,6,2
+Unbelievable True Voltage,Electric,6,2
+Unbelievable Ancient Fart,Wind,6,2
+Dao of Choke,Neutral,6,3
+Dao of Parasite Growth,Plant,6,3
+Dao of Shadow's Betrayal,Dark,6,3
+Dao of Light's Loyalth,Light,6,3
+Dao of Water Stomp,Water,6,3
+Dao of Fire Blaze,Fire,6,3
+Dao of Earth Split,Earth,6,3
+Dao of True Voltage,Electric,6,3
+Dao of Ancient Fart,Wind,6,3

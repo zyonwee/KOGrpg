@@ -43,13 +43,13 @@ def get_all_monsters_exist_name_lower():
     query = (f"SELECT * FROM monsters")
     cursor.execute(query)
     for i in cursor:
-        names.append(i[0])
+        names.append(i[0].lower())
         # print(i[0])
     cursor.close()
     cnx.close()
     # print(names)
     return names
-# print(get_all_monsters_exist_name_lower())
+
 
 def get_all_lootshop():
     names = []

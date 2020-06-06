@@ -16,10 +16,11 @@ def get_stats(name):  # get stats of item
     return stats[0]
 # print(get_stats())
 
-def get_all_name_below_price(p):  # get stats of item
+
+def get_all_name_below_price(p, tier):  # get stats of item
     cnx = db.cnx()
     cursor = cnx.cursor()
-    query = (f"SELECT * FROM items WHERE price < '{p}'")
+    query = (f"SELECT * FROM items WHERE price < '{p}' and tier <= '{tier}'")
     stats = []
     cursor.execute(query)
     for i in cursor:
@@ -59,4 +60,8 @@ def get_shop(n):
 
 def get_boosts(n):
     boosts = get_stats(n)[7]
+    return str(boosts)
+
+def get_tier(n):
+    boosts = get_stats(n)[8]
     return str(boosts)

@@ -1,24 +1,24 @@
-id,name,emoji,type,desc,price,shop,boosts
-12,"Baby Core",<:BabyCore:715931243270897736>,evo,"Used to evolve a Baby pet",500,pet,NULL
-8,Blood,<:littleBlood:715476281227214892>,mat,"Its either my blood, or yours. *From lv 3 Monster*",400,misc,NULL
-20,"Champion Core",<:ChampionCore:716082031414739015>,evo,"Used to evolve a Champion pet",32000,pet,NULL
-2,"Egg Common",<:EggCommon:714959842846179428>,pet,"Common Egg? Maybe a Chicken. Maybe A Dog.",1500,egg,NULL
-3,"Egg Uncommon",<:EggUncommon:714970054877511711>,pet,"Uncommon Egg. You dont eat them everyday",10000,egg,NULL
-9,Fangs,<:littlefangs:715474159538405406>,mat,"Omg. Someone's not brushing Teeth! *From lv 0 Monster*",200,misc,NULL
-17,"Halo Ole Champion",<:championhalo:716082031339110431>,mat,"When a champion wins, he lo-hey ! *From level 25 Monster*",10000,misc,NULL
-7,"Holey Shirt",<:holeyshirt:715580306324848761>,def,"Obscene. Do not wear. + 2 Def",2000,basic,2
-13,"In-Training Core",<:InTrainingCore:716003698618269798>,evo,"Used to evolve a In-Training pet",2000,pet,NULL
-14,Jelly,<:jellydrop:716013929750331434>,mat,"Oh my! Yumz.. *From lv 9 Monster*",2000,misc,NULL
-1,"Life Potion",<:lifepotion:715245405918593207>,hp,"Consume by `kog heal`",25,basic,NULL
-21,Lootbox,<:lootbox:716102332764389406>,lb,"Loot Box for a Noob",10000,lb,NULL
-15,"Magic Bean",<:magicbean:716082031615934504>,mat,"Jack threw it away. *From lv 12 Monster*",3000,misc,NULL
-6,Nail,<:nail:715580306031247381>,att,"Nail ( Not the ones Jesus use ). + 5 Att",1500,basic,5
-10,Ooze,<:littleOoze:715475989353857064>,mat,"Is this... Mucus ? *From lv 5 Monster*",1000,misc,NULL
-5,Pancake,<:pancake:715580305796497519>,def,"Days old Pancake. + 1 Def",1000,basic,1
-11,"Pet Treats",<:pettrest:715823538694783067>,petxp,"Main Pet XP + 1000",2000,pet,1000
-22,"Rare Lootbox",<:rarelootbox:716102332772778104>,lb,"Loot Box for Not a noob. Unique items : <:rarestaff:716219592325857340>",50000,lb,NULL
-23,"Rare Staff",<:rarestaff:716219592325857340>,att,"This is the staff of legends! Only obtainable through Rare lootbox and above!!",20000,special,8
-16,"Rockie Core",<:rockiecore:716082031658008687>,mat,"The Life of a Stone *From level 19  Monster*",5000,misc,NULL
-19,"Rookie Core",<:RookieCore:716082031624454165>,evo,"Used to evolve a Rookie pet",8000,pet,NULL
-4,Stick,<:stick:715580305922195478>,att,"Stick of the floor. + 3 Att",600,basic,3
-18,"Water Lantern",<:waterlantern:716082031330721815>,mat,"Lantern that works underwater? *From level 31 Monster*",15000,misc,NULL
+id,name,emoji,type,desc,price,shop,boosts,tier
+1,"life potion",<:lifepotion:715245405918593207>,hp,"Consume by `kog heal`",25,basic,,1
+2,"egg common",<:EggCommon:714959842846179428>,pet,"Common Egg? Maybe a Chicken. Maybe A Dog. But definately a baby.",1500,egg,,1
+3,"egg uncommon",<:EggUncommon:714970054877511711>,pet,"Uncommon Egg. You dont eat them everyday but definately a In-Training.",10000,egg,,1
+4,stick,<:stick:715580305922195478>,att,"Stick of the floor. + 3 Att",60,basic,3,1
+5,pancake,<:pancake:715580305796497519>,def,"Days old Pancake. + 1 Def",100,basic,1,1
+6,nail,<:nail:715580306031247381>,att,"Nail ( Not the ones Jesus use ). + 5 Att",1500,basic,5,1
+7,"holey shirt",<:holeyshirt:715580306324848761>,def,"Obscene. Do not wear. + 2 Def",2000,basic,2,1
+8,blood,<:littleBlood:715476281227214892>,mat,"Its either my blood, or yours. *From lv 3 Monster*",40,misc,,1
+9,fangs,<:littlefangs:715474159538405406>,mat,"Omg. Someone's not brushing Teeth! *From lv 0 Monster*",20,misc,,1
+10,ooze,<:littleOoze:715475989353857064>,mat,"Is this... Mucus ? *From lv 5 Monster*",100,misc,,1
+11,"pet treats",<:pettrest:715823538694783067>,petxp,"Main Pet XP + 1000",2000,pet,1000,1
+12,"baby core",<:BabyCore:715931243270897736>,evo,"Used to evolve a Baby pet",15000,pet,,1
+13,"in-training core",<:InTrainingCore:716003698618269798>,evo,"Used to evolve a In-Training pet",120000,pet,,1
+14,jelly,<:jellydrop:716013929750331434>,mat,"Oh my! Yumz.. *From lv 9 Monster*",200,misc,,1
+15,"magic bean",<:magicbean:716082031615934504>,mat,"Jack threw it away. *From lv 12 Monster*",300,misc,,1
+16,"rockie core",<:rockiecore:716082031658008687>,mat,"The Life of a Stone *From level 19  Monster*",500,misc,,1
+17,"halo ole champion",<:championhalo:716082031339110431>,mat,"When a champion wins, he lo-hey ! *From level 25 Monster*",1000,misc,,1
+18,"water lantern",<:waterlantern:716082031330721815>,mat,"Lantern that works underwater? *From level 31 Monster*",1500,misc,,1
+19,"rookie core",<:RookieCore:716082031624454165>,evo,"Used to evolve a Rookie pet",180000,pet,,1
+20,"champion core",<:ChampionCore:716082031414739015>,evo,"Used to evolve a Champion pet",1320000,pet,,1
+21,lootbox,<:lootbox:716102332764389406>,lb,"Loot Box for a Noob",10000,lb,,1
+22,"rare lootbox",<:rarelootbox:716102332772778104>,lb,"Loot Box for Not a noob. Unique items : <:rarestaff:716219592325857340>",50000,lb,,1
+23,"rare staff",<:rarestaff:716219592325857340>,att,"This is the staff of legends! Only obtainable through Rare lootbox and above!!",20000,special,8,1
